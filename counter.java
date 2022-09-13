@@ -53,8 +53,6 @@ public class counter {
  			 //finished cleaning up code, now need to split string and move it into an array list
  			 
  			 
- 			 
- 			 
  			 String broken[] = reading.split(" ");
  			 
  			 // creates a list to be used to split the line which is called SplitList
@@ -87,9 +85,7 @@ public class counter {
 			// loop ends
 		 }
 		
-		
-		
-		
+	    //sorts "list" 
 		
 		Collections.sort(list);
 		
@@ -110,19 +106,15 @@ public class counter {
 		
 		List<String> frequencyCount = new ArrayList<>(); 
 	
-		
+		//loop is used to add word and how many times the word is found
 		 
 		for (int i = 0; i < reference.size(); i ++) {
 			
-			
-	    // System.out.println("\"" + reference.get(i) + "\" can be found " + Collections.frequency(list, reference.get(i)) + " time(s) in the html document."); 
-	   
+		
 	    Integer num = Collections.frequency(list, reference.get(i));
 	    
+	    //converts word count per word from int to string
 	    String numCount = num.toString();
-	    
-	    
-	    
 	    
 	    frequencyCount.add("\"" + reference.get(i) + "\""+ " "+ numCount);
 	    
@@ -130,7 +122,7 @@ public class counter {
 			
 		}
 		
-		
+		//comparator used to extract integers and sort them by highest to lowest
 		
 		Collections.sort(frequencyCount, new Comparator<String>() {
 		    public int compare(String o1, String o2) {
@@ -144,11 +136,15 @@ public class counter {
 		    }
 		});
 		
+		//limits the results range to the maximum value of the array
+		
 		 if (resultsRange > frequencyCount.size()) {
 			 
 			 resultsRange = frequencyCount.size();
 			 
 		 }
+		 
+		 // limits the results range to ignore 0 and any value lesser
 		 
          if (resultsRange <= 0) {
 			 
@@ -156,7 +152,7 @@ public class counter {
 			 
 		 }
  		
-		 // used to represent the numbered sequence
+		 // used to represent the numbered sequence to "number" the results
 	     Integer counter = 1;
 	     
 	     //prints out results
@@ -178,17 +174,12 @@ public class counter {
 			
 		}
          
-         
-		
-		
-		 
-		
+       
 		//closes reader after running function 
 		
 		 reader.close();
 		
-		
-		
+	
 	}
 	
 
