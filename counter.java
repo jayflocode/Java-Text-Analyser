@@ -1,10 +1,16 @@
-package Frequency;
+package application;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
-public class counter {
+public class counter extends Main {
+	
+	
+	public static ArrayList<String> array;
+	
+	
 	
 	
 	//function that takes in html File Object and int that represents the number for results we want
@@ -53,8 +59,6 @@ public class counter {
  			 //finished cleaning up code, now need to split string and move it into an array list
  			 
  			 
- 			 
- 			 
  			 String broken[] = reading.split(" ");
  			 
  			 // creates a list to be used to split the line which is called SplitList
@@ -87,9 +91,7 @@ public class counter {
 			// loop ends
 		 }
 		
-		
-		
-		
+	    //sorts "list" 
 		
 		Collections.sort(list);
 		
@@ -110,19 +112,15 @@ public class counter {
 		
 		List<String> frequencyCount = new ArrayList<>(); 
 	
-		
+		//loop is used to add word and how many times the word is found
 		 
 		for (int i = 0; i < reference.size(); i ++) {
 			
-			
-	    // System.out.println("\"" + reference.get(i) + "\" can be found " + Collections.frequency(list, reference.get(i)) + " time(s) in the html document."); 
-	   
+		
 	    Integer num = Collections.frequency(list, reference.get(i));
 	    
+	    //converts word count per word from int to string
 	    String numCount = num.toString();
-	    
-	    
-	    
 	    
 	    frequencyCount.add("\"" + reference.get(i) + "\""+ " "+ numCount);
 	    
@@ -130,7 +128,7 @@ public class counter {
 			
 		}
 		
-		
+		//comparator used to extract integers and sort them by highest to lowest
 		
 		Collections.sort(frequencyCount, new Comparator<String>() {
 		    public int compare(String o1, String o2) {
@@ -144,19 +142,26 @@ public class counter {
 		    }
 		});
 		
+		//limits the results range to the maximum value of the array
+		
 		 if (resultsRange > frequencyCount.size()) {
 			 
 			 resultsRange = frequencyCount.size();
 			 
 		 }
 		 
+		 // limits the results range to ignore 0 and any value lesser
+		 
          if (resultsRange <= 0) {
 			 
 			 resultsRange = 1;
 			 
 		 }
+         
+         
+         
  		
-		 // used to represent the numbered sequence
+		 // used to represent the numbered sequence to "number" the results
 	     Integer counter = 1;
 	     
 	     //prints out results
@@ -164,6 +169,10 @@ public class counter {
 	     System.out.println();
 	     System.out.println("Top " + resultsRange + " Results found in the html document");
 	     System.out.println();
+	     
+	     
+	     ArrayList<String> copy = new ArrayList<String>();
+	     
 		
          for (int i = 0; i < resultsRange; i++) {
 		
@@ -172,6 +181,12 @@ public class counter {
 			
 		System.out.println(counterString + ". " + frequencyCount.get(i));
 		
+		
+		copy.add(counterString + ". " + frequencyCount.get(i));
+		
+		
+		
+		
 		//number sequence counter
 		counter++;
 			
@@ -179,41 +194,21 @@ public class counter {
 		}
          
          
-		
-		
-		 
-		
+         array = copy;
+       
 		//closes reader after running function 
+         
+         
+        
 		
 		 reader.close();
 		
-		
-		
+	  
 	}
 	
 
+	// remove main 
+
 	
-
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		// string used to assign file name
-		String htmlFile = "mod2.htm";
-		// int used to assign results range, default set at 20
-		int resultsRange = 20;
-
-		//declaring File Object 
-		
-		File module2 = new File(htmlFile);
-		
-	    // calling method that takes in a File object, and an integer that represents the range of results
-		
-		reader(module2, resultsRange);
-	    
-		
-		
-		
-		
-		
-	}
 
 }
