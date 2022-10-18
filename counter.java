@@ -1,10 +1,41 @@
-package Frequency;
+package application;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
-public class counter {
+public class counter  {
+	
+	
+	
+	 //array used to store information so it can be accessed by button listener 
+	public static ArrayList<String> array;  
+	
+	
+	
+	//method sorts List from high to low
+	
+	public static List<String> sort (List<String> clean) {
+		
+		
+		Collections.sort(clean, new Comparator<String>() {
+		    public int compare(String o1, String o2) {
+		        return extractInt(o2) - extractInt(o1);
+		    }
+
+		    int extractInt(String s) {
+		        String num = s.replaceAll("\\D", "");
+		        // return 0 if no digits found
+		        return num.isEmpty() ? 0 : Integer.parseInt(num);
+		    }
+		});
+		
+		return clean;
+		
+	}
+	
+	
 	
 	
 	//function that takes in html File Object and int that represents the number for results we want
@@ -124,17 +155,7 @@ public class counter {
 		
 		//comparator used to extract integers and sort them by highest to lowest
 		
-		Collections.sort(frequencyCount, new Comparator<String>() {
-		    public int compare(String o1, String o2) {
-		        return extractInt(o2) - extractInt(o1);
-		    }
-
-		    int extractInt(String s) {
-		        String num = s.replaceAll("\\D", "");
-		        // return 0 if no digits found
-		        return num.isEmpty() ? 0 : Integer.parseInt(num);
-		    }
-		});
+		sort(frequencyCount);
 		
 		//limits the results range to the maximum value of the array
 		
@@ -151,6 +172,9 @@ public class counter {
 			 resultsRange = 1;
 			 
 		 }
+         
+         
+         
  		
 		 // used to represent the numbered sequence to "number" the results
 	     Integer counter = 1;
@@ -160,6 +184,10 @@ public class counter {
 	     System.out.println();
 	     System.out.println("Top " + resultsRange + " Results found in the html document");
 	     System.out.println();
+	     
+	     
+	     ArrayList<String> copy = new ArrayList<String>();
+	     
 		
          for (int i = 0; i < resultsRange; i++) {
 		
@@ -168,43 +196,34 @@ public class counter {
 			
 		System.out.println(counterString + ". " + frequencyCount.get(i));
 		
+		
+		copy.add(counterString + ". " + frequencyCount.get(i));
+		
+		
+		
+		
 		//number sequence counter
 		counter++;
 			
 			
 		}
          
+         
+         array = copy;
        
 		//closes reader after running function 
+         
+         
+        
 		
 		 reader.close();
 		
-	
+	  
 	}
 	
 
+	// remove main 
+
 	
-
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		// string used to assign file name
-		String htmlFile = "mod2.htm";
-		// int used to assign results range, default set at 20
-		int resultsRange = 20;
-
-		//declaring File Object 
-		
-		File module2 = new File(htmlFile);
-		
-	    // calling method that takes in a File object, and an integer that represents the range of results
-		
-		reader(module2, resultsRange);
-	    
-		
-		
-		
-		
-		
-	}
 
 }
