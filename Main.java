@@ -194,7 +194,36 @@ public class Main extends Application {
 			dbButton.setText("Query Database");
 			
 			
+			//query button listener
 			
+			
+			dbButton.setOnAction(new EventHandler<ActionEvent>() {
+				
+				
+			    @Override public void handle(ActionEvent e) {
+			    	
+
+                try {
+					SqlConnect.print();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+			    outputDB.clear();	
+			    
+			
+			    for (int i = 0; i < SqlConnect.arrayMaster.size(); i++) {
+			    	
+			    	
+			    	// prints output to textfield
+			    	outputDB.appendText(SqlConnect.arrayMaster.get(i) + "\n");
+			    	
+			
+			    }
+			    	
+			    	
+			    }
+			});
 			
 			
 			//action listener for the button execute search
@@ -211,18 +240,17 @@ public class Main extends Application {
 			    for (int i = 0; i < counter.array.size(); i++) {
 			    	
 			    	
-			    	
+			    	// prints output to textfield
 			    	output.appendText(counter.array.get(i) + "\n");
 			    	
+			    	// sends output as an insert command to the database 
 			    	try {
 						SqlConnect.insert(counter.array.get(i));
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-			    	
-			    	
-			    	
+			
 			    	
 			    }
 			    	

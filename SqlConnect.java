@@ -6,40 +6,164 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
-public class SqlConnect extends Main  {
-	
-	      //truncates the database
-	
-	
-      public static void truncate() throws Exception {
+         public class SqlConnect extends Main  {
+        	 
+        	 //array master stores current query information
+        	 
+        	public static ArrayList<String> arrayMaster;  
+	        
+	        
+        	 
+        	 //aids in printing columns for SQL queries
+
+	       private static String pad(String s) {
 		
-		final String var1 = "TRUNCATE `word occurrences`.`word`;";
-		
-		try {
-		Connection con = sql();
-		// INSERT INTO word VALUE ('Cardinal');
-		
-		
-		PreparedStatement posted = con.prepareStatement(var1);
-		
-		posted.executeUpdate();
-		
-		}
-		
-		catch (Exception e)  {
+		   int COLUMN_WIDTH = 25;
+		   
+			int padCount = COLUMN_WIDTH - s.length(); 
 			
-			System.out.println(e);
-		}
-		
-		finally {
+			StringBuilder sb = new StringBuilder(25);
+
+			sb.append(s);
 			
-			System.out.println("Database has been truncated");
-		}
-		
-		
-	}
+			for (int i = 0; i < padCount; i++) {
+			sb.append(" "); }
+			
+			
+			
+			return sb.toString(); 
+			}
+	       
+	       
+	       
+	       public static void print() throws Exception {
+	    	   
+	    	   //clears array so it doesn't stack queries with the same information
+	    	   
+	    	   
+	    	   ArrayList<String> dbarray = new ArrayList<String>();
+	    	   
+	    	   ResultSet results = null;
+	    	   
+	    	   Connection con = sql();
+	    	   System.out.println("Select Query established"); 
+	    	   System.out.println();
+	    	   
+	    	   Statement statement = con.createStatement();
+	    	   
+	    	   //query orders varchar information by numbers
+	    	   
+	    	   String query = "SELECT Words FROM word ORDER BY Words*1;";
+	    	   
+	    	   ResultSet resultSet = statement.executeQuery(query);
+	    	   
+
+	           StringBuilder sb = new StringBuilder();
+	           
+	           String st = "";
+	    	   
+	    	   ResultSetMetaData metaData = resultSet.getMetaData();
+	            int columnCount = metaData.getColumnCount(); for (int i = 0; i < columnCount; i++) {
+	            
+	            System.out.print(pad(metaData.getColumnName(i + 1)));
+	            
+	            //adds column to array as first element
+	            
+	            
+	            st = pad(metaData.getColumnName(i + 1));
+	           
+	            
+	            st = sb.append(st).toString();
+	            
+	            
+	            
+	            }
+	            
+	            dbarray.add(st);
+	            
+	            
+	            System.out.println();
+	            System.out.println();
+	            
+	            //adds multiple lines to array
+	            
+	            dbarray.add("");
+	            
+	            StringBuilder info = new StringBuilder();
+	            String in = "";
+	            
+	               while (resultSet.next()) {
+	            	   
+	            	StringBuilder builder = new StringBuilder();
+	    	           
+	    	        String string = "";   
+	            	   
+	            	   
+	            	String[] row = new String[columnCount]; 
+	            	
+	            	
+	            	for (int i = 0; i < columnCount; i++) {
+	            	
+	            	row[i] = resultSet.getString(i + 1);
+	            	
+	            	// adds row to array
+	            	
+	            	           	
+	            
+	            	
+	                 System.out.print(pad(row[i])); 
+	              
+	                 
+	                 in = pad(row[i]);
+	                 in = builder.append(in).toString();
+	                 
+	                
+	                
+	            	
+	            	
+	            	}
+	            	
+	            	 dbarray.add(in);
+	            	
+	            	
+	            	
+	            	
+	            	System.out.println(); 
+	            	
+	            
+	               
+	               }
+			    
+	            
+		    System.out.println();
+		    
+		  
+		    
+		    
+		    arrayMaster = dbarray;
+		    
+		    for (int i = 0; i < arrayMaster.size(); i++) {
+		    	
+		    	System.out.println(arrayMaster.get(i));
+		    	
+		    	
+		    }
+		    
+		    
+		    
+		   
+ 	    	 
+	    	   
+	       }
+	
+	
+	
+	
+	
+	   
 	
       //inserts into the database 
 	
@@ -87,7 +211,7 @@ public class SqlConnect extends Main  {
 		
 		Connection conn = DriverManager.getConnection(url, username, password);
 		
-		System.out.print("Connected to database");
+		System.out.println("Connected to database");
 		
 		return conn;
 		
