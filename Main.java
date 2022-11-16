@@ -21,6 +21,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.*;
+import java.util.Scanner;
 
 
 
@@ -45,8 +49,18 @@ public class Main extends Application {
 	public static String resultEntry;
 	public static String htmlFile = "mod2.htm";
 	public static String output3;
+	public static String db = "";
 	
 	
+	
+	
+	public static void setDB(String dbt) {
+		
+		
+		db = dbt;
+	
+		
+	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -160,8 +174,14 @@ public class Main extends Application {
             //Grid Text Area   where results are set to be displayed 
 			
 			TextArea output = new TextArea();    //textfield 1
-			output.setPrefSize(500, 400);
+			output.setPrefSize(450, 400);
 			
+			   //textfield 1
+			TextArea outputDB = new TextArea();
+			outputDB.setPrefSize(450, 400);
+			
+			Label lab = new Label();
+			lab.setText("SQL Database Information");
 			
 			
 			//creation of execute search button
@@ -170,23 +190,38 @@ public class Main extends Application {
 			button1.setText("Execute Search");
 			
 			
+			Button dbButton = new Button();  //button1
+			dbButton.setText("Query Database");
+			
+			
+			
+			
+			
 			//action listener for the button execute search
 			button1.setOnAction(new EventHandler<ActionEvent>() {
 				
-				
-				
-				
+			
 			    @Override public void handle(ActionEvent e) {
 			    	
 
 			       
 			    output.clear();	
-			    	
+			    
+			
 			    for (int i = 0; i < counter.array.size(); i++) {
 			    	
 			    	
 			    	
 			    	output.appendText(counter.array.get(i) + "\n");
+			    	
+			    	try {
+						SqlConnect.insert(counter.array.get(i));
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			    	
+			    	
 			    	
 			    	
 			    }
@@ -233,6 +268,7 @@ public class Main extends Application {
 			    grid.add(resultsField, 1, 0);
 			    grid.add(button1, 3, 0);
 			    grid.add(button2, 5, 0);
+			    grid.add(dbButton, 10, 5);
 			    
 			    /**
 				 * This second grid is for the textfield only. 
@@ -251,7 +287,10 @@ public class Main extends Application {
 				    grid2.setHgap(10);
 				    grid2.setPadding(new Insets(5, 5, 5, 5));
 				    grid2.add(new Label("Top Words found in HTML document: "), 0, 0);
-				    grid2.add(output, 0, 15);	    
+				    grid2.add(output, 0, 15);
+				    grid2.add(outputDB, 1, 15);
+				    grid2.add(lab, 1, 0);
+				    
 			   
 			
 			
