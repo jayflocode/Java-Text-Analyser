@@ -1,26 +1,26 @@
-# Text-Analyzer-
+Text Analyzer Java Program 
 
 
-Created by Jayson Flores, last modified Oct 10, 2022
+Instructions:
 
-Release: 2.0
-Document Type: Draft
-Document Owner: Jayson Flores
-Designer: Jayson Flores
+HTML Reader
 
-Requirements
+1. Place html file in the same folder that you are running the Jar. 
+2. Open the Jar 
+3. Select the range of your search, for example, entering 20 will yield top 20 results. 
 
-1.	The application must implement a function to analyze an html document. 
-2.	The application must implement a graphical interface. 
 
-User Interaction and Design:
+SQL Client:
 
-Application uses JavaFX for the GUI.
+1. Enter Query
+2. Enter Schema 
+3. Select Execute Query
 
-Description:
+Note: This will only query a local SQL server running on port 3306. 
 
-Text Analyzer is a small program that allows you to remove HTML tags from web documents and output the results of the most frequently used words
+Version Release: 5.0
+Operating System: Mac OS
 
-Changes:
 
-Version 2.0 was released with added GUI functionality. 
+
+
