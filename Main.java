@@ -1,4 +1,4 @@
-package application;
+package com.example.projectfinal;
 	
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,13 +54,6 @@ public class Main extends Application {
 	
 	
 	
-	public static void setDB(String dbt) {
-		
-		
-		db = dbt;
-	
-		
-	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -113,7 +106,7 @@ public class Main extends Application {
 			//label settings for app title
 			label1.setLayoutX(440);
 			label1.setLayoutY(20);
-			label1.setText("Word Analyzer");
+			label1.setText("Word Analyser");
 			label1.setFont(Font.font("verdana", FontPosture.REGULAR, 20)); //setting static font
 			
 			
@@ -128,6 +121,14 @@ public class Main extends Application {
 			resultsField.setMaxWidth(40);
 			
 			
+			TextField schema = new TextField();    //textfield 1
+			schema.setMaxWidth(120);
+			
+			TextField queryField = new TextField();    //textfield 1
+			queryField.setPrefWidth(300);
+			queryField.setPromptText("SELECT Words FROM word ORDER BY Words*1;");
+			
+			
 			//action listener for the key presses
 		
 			/**
@@ -136,7 +137,7 @@ public class Main extends Application {
 			 * 
 			 */
 			
-			scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			resultsField.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
 				@Override
 				public void handle(KeyEvent eventType) {
@@ -164,6 +165,45 @@ public class Main extends Application {
 				
 				
 			});
+
+
+			/** action listener for query field, this is where the query is executed
+			 */
+
+			queryField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+				@Override
+				public void handle(KeyEvent eventType) {
+					// TODO Auto-generated method stub
+
+					SqlConnect.query = queryField.getText();
+					System.out.println("Query is: " + queryField.getText());
+					System.out.println("Query Field = " + SqlConnect.query);
+					
+					
+				}
+				
+				
+			});
+
+			/** action listener for schema field, this is where database is indicated
+			 */
+
+			schema.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+				@Override
+				public void handle(KeyEvent eventType) {
+					// TODO Auto-generated method stub
+
+					SqlConnect.schemaName = schema.getText();
+					System.out.println("Schema is: " + schema.getText());
+					System.out.println("Schema is set to = " + SqlConnect.schemaName);
+
+
+				}
+
+
+			});
 			
 			/**
 			 * Text area is created to display the results
@@ -182,6 +222,9 @@ public class Main extends Application {
 			
 			Label lab = new Label();
 			lab.setText("SQL Database Information");
+
+			Label intruc1 = new Label();
+			intruc1.setText("                                                     Query Field                                                 Schema Field");
 			
 			
 			//creation of execute search button
@@ -193,8 +236,7 @@ public class Main extends Application {
 			Button dbButton = new Button();  //button1
 			dbButton.setText("Query Database");
 			
-			
-			//query button listener
+			/** query button listener, upon pressing it retrieves information from the table */
 			
 			
 			dbButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -212,21 +254,30 @@ public class Main extends Application {
 			    outputDB.clear();	
 			    
 			
-			    for (int i = 0; i < SqlConnect.arrayMaster.size(); i++) {
-			    	
-			    	
-			    	// prints output to textfield
-			    	outputDB.appendText(SqlConnect.arrayMaster.get(i) + "\n");
-			    	
-			
-			    }
+			    try {
+					for (int i = 0; i < SqlConnect.arrayMaster.size(); i++) {
+						
+						
+						// prints output to textfield
+						outputDB.appendText(SqlConnect.arrayMaster.get(i) + "\n");
+						
+
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					
+					
+					System.out.println("Contents failed to load in Text Area");
+					
+					
+				}
 			    	
 			    	
 			    }
 			});
 			
 			
-			//action listener for the button execute search
+			//action listener for the button execute search (array retrieval)
 			button1.setOnAction(new EventHandler<ActionEvent>() {
 				
 			
@@ -244,12 +295,7 @@ public class Main extends Application {
 			    	output.appendText(counter.array.get(i) + "\n");
 			    	
 			    	// sends output as an insert command to the database 
-			    	try {
-						SqlConnect.insert(counter.array.get(i));
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+			    	
 			
 			    	
 			    }
@@ -262,16 +308,29 @@ public class Main extends Application {
 			 */
 			//exit program button
 			
-			Button button2 = new Button();
-			button2.setText("Exit Program");
+			Button insertDB = new Button();
+			insertDB.setText("Insert Data to SQL Table");
 			
 			//action listener for exit program button
-            button2.setOnAction(new EventHandler<ActionEvent>() {
+			insertDB.setOnAction(new EventHandler<ActionEvent>() {
 				
 				
 			    @Override public void handle(ActionEvent e) {
 			       
-			    	System.exit(0);
+			    	// System.exit(0);  exits program- set for later use 
+			    	
+			    	
+			    	for (int i = 0; i < counter.array.size(); i ++) {
+			    		
+			    		try {
+							SqlConnect.insert(counter.array.get(i));
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			    		
+			    		
+			    	}
 			    	
 			    	
 			    }
@@ -295,8 +354,12 @@ public class Main extends Application {
 			    grid.add(new Label("Enter Range of Results: "), 0, 0);
 			    grid.add(resultsField, 1, 0);
 			    grid.add(button1, 3, 0);
-			    grid.add(button2, 5, 0);
-			    grid.add(dbButton, 10, 5);
+			    grid.add(insertDB, 5, 0);
+			   
+			   
+			    grid.add(queryField, 6, 28);
+			    grid.add(schema, 7, 28);
+			    grid.add(dbButton, 7, 15);
 			    
 			    /**
 				 * This second grid is for the textfield only. 
@@ -314,10 +377,13 @@ public class Main extends Application {
 				    grid2.setVgap(4);
 				    grid2.setHgap(10);
 				    grid2.setPadding(new Insets(5, 5, 5, 5));
-				    grid2.add(new Label("Top Words found in HTML document: "), 0, 0);
+				    grid2.add(new Label("Top Words found in HTML document (document html packaged into jar): "), 0, 0);
+				    
+				    
 				    grid2.add(output, 0, 15);
 				    grid2.add(outputDB, 1, 15);
-				    grid2.add(lab, 1, 0);
+				    grid2.add(lab, 1, 1);
+					grid2.add(intruc1, 1, 2);
 				    
 			   
 			
@@ -338,8 +404,8 @@ public class Main extends Application {
 			/**
 			 * The below code retrives and executes both grids that we created previously.
 			 */
-			label.getChildren().add(grid);  //group for text label grid 
-			label.getChildren().add(grid2);
+			label.getChildren().add(grid2);  //group for text label grid 
+			label.getChildren().add(grid);
 			
 			
 			
@@ -347,7 +413,7 @@ public class Main extends Application {
 			
 			
 			
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

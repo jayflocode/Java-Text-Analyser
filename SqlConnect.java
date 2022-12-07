@@ -1,10 +1,11 @@
-package application;
+package com.example.projectfinal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -13,7 +14,21 @@ import java.util.ArrayList;
         	 
         	 //array master stores current query information
         	 
-        	public static ArrayList<String> arrayMaster;  
+        	public static ArrayList<String> arrayMaster;
+        	
+        	// public static string value for the name of the table
+        	public static String schemaName = "";
+        	//public static String query = "SELECT Words FROM word ORDER BY Words*1;";
+
+			 public static String query = "";
+        	
+        	
+        	//unused methods or setters for future use 
+        	
+        	
+        	//sets query
+        	
+
 	        
 	        
         	 
@@ -46,7 +61,7 @@ import java.util.ArrayList;
 	    	   
 	    	   ArrayList<String> dbarray = new ArrayList<String>();
 	    	   
-	    	   ResultSet results = null;
+	    	   
 	    	   
 	    	   Connection con = sql();
 	    	   System.out.println("Select Query established"); 
@@ -56,101 +71,112 @@ import java.util.ArrayList;
 	    	   
 	    	   //query orders varchar information by numbers
 	    	   
-	    	   String query = "SELECT Words FROM word ORDER BY Words*1;";
 	    	   
-	    	   ResultSet resultSet = statement.executeQuery(query);
 	    	   
+	    	  
+	    	   
+	    	   try {
+				ResultSet resultSet = statement.executeQuery(query);
+				   
 
-	           StringBuilder sb = new StringBuilder();
-	           
-	           String st = "";
-	    	   
-	    	   ResultSetMetaData metaData = resultSet.getMetaData();
-	            int columnCount = metaData.getColumnCount(); for (int i = 0; i < columnCount; i++) {
-	            
-	            System.out.print(pad(metaData.getColumnName(i + 1)));
-	            
-	            //adds column to array as first element
-	            
-	            
-	            st = pad(metaData.getColumnName(i + 1));
-	           
-	            
-	            st = sb.append(st).toString();
-	            
-	            
-	            
-	            }
-	            
-	            dbarray.add(st);
-	            
-	            
-	            System.out.println();
-	            System.out.println();
-	            
-	            //adds multiple lines to array
-	            
-	            dbarray.add("");
-	            
-	            StringBuilder info = new StringBuilder();
-	            String in = "";
-	            
-	               while (resultSet.next()) {
-	            	   
-	            	StringBuilder builder = new StringBuilder();
-	    	           
-	    	        String string = "";   
-	            	   
-	            	   
-	            	String[] row = new String[columnCount]; 
-	            	
-	            	
-	            	for (int i = 0; i < columnCount; i++) {
-	            	
-	            	row[i] = resultSet.getString(i + 1);
-	            	
-	            	// adds row to array
-	            	
-	            	           	
-	            
-	            	
-	                 System.out.print(pad(row[i])); 
-	              
-	                 
-	                 in = pad(row[i]);
-	                 in = builder.append(in).toString();
-	                 
-	                
-	                
-	            	
-	            	
-	            	}
-	            	
-	            	 dbarray.add(in);
-	            	
-	            	
-	            	
-	            	
-	            	System.out.println(); 
-	            	
-	            
-	               
-	               }
-			    
-	            
-		    System.out.println();
-		    
-		  
-		    
-		    
-		    arrayMaster = dbarray;
-		    
-		    for (int i = 0; i < arrayMaster.size(); i++) {
-		    	
-		    	System.out.println(arrayMaster.get(i));
-		    	
-		    	
-		    }
+				   StringBuilder sb = new StringBuilder();
+				   
+				   String st = "";
+				   
+				   ResultSetMetaData metaData = resultSet.getMetaData();
+				    int columnCount = metaData.getColumnCount(); for (int i = 0; i < columnCount; i++) {
+				    
+				    System.out.print(pad(metaData.getColumnName(i + 1)));
+				    
+				    //adds column to array as first element
+				    
+				    
+				    st = pad(metaData.getColumnName(i + 1));
+				   
+				    
+				    st = sb.append(st).toString();
+				    
+				    
+				    
+				    }
+				    
+				    dbarray.add(st);
+				    
+				    
+				    System.out.println();
+				    System.out.println();
+				    
+				    //adds multiple lines to array
+				    
+				    dbarray.add("");
+				    
+				    StringBuilder info = new StringBuilder();
+				    String in = "";
+				    
+				       while (resultSet.next()) {
+				    	   
+				    	StringBuilder builder = new StringBuilder();
+				           
+				        String string = "";   
+				    	   
+				    	   
+				    	String[] row = new String[columnCount]; 
+				    	
+				    	
+				    	for (int i = 0; i < columnCount; i++) {
+				    	
+				    	row[i] = resultSet.getString(i + 1);
+				    	
+				    	// adds row to array
+				    	
+				    	           	
+				    
+				    	
+				         System.out.print(pad(row[i])); 
+				      
+				         
+				         in = pad(row[i]);
+				         in = builder.append(in).toString();
+				         
+				        
+				        
+				    	
+				    	
+				    	}
+				    	
+				    	 dbarray.add(in);
+				    	
+				    	
+				    	
+				    	
+				    	System.out.println(); 
+				    	
+				    
+				       
+				       }
+				    
+				    
+				System.out.println();
+				
+  
+				
+				
+				arrayMaster = dbarray;
+				
+				for (int i = 0; i < arrayMaster.size(); i++) {
+					
+					System.out.println(arrayMaster.get(i));
+					
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				
+				System.out.println("There is an issue with the formatting of your query, try again");
+				System.out.println();
+				
+				
+			}
 		    
 		    
 		    
@@ -202,8 +228,8 @@ import java.util.ArrayList;
 		
 		
 		try {
-		String driver = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/word occurrences";
+		String driver = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/" + schemaName;
 		String username = "root";
 		String password = "Jayroot84";
 		
